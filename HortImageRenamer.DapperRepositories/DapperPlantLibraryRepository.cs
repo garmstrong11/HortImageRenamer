@@ -1,15 +1,12 @@
 ﻿namespace HortImageRenamer.DapperRepositories
 {
   using System.Collections.Generic;
-  using System.Linq;
   using Dapper;
   using HortImageRenamer.Domain;
   using HortImageRenamer.ServiceInterfaces;
 
   public class DapperPlantLibraryRepository : RepositoryBase, IPlantLibraryRepository
   {
-    private readonly IConnectionService _connectionService;
-
     public DapperPlantLibraryRepository(IConnectionService connectionService) 
       : base(connectionService)
     {
@@ -27,7 +24,7 @@
       return result;
     }
 
-    private string GetPlantLibraryImageIdQuery()
+    private static string GetPlantLibraryImageIdQuery()
     {
       QueryBuilder.Clear();
 

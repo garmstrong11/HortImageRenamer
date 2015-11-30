@@ -16,6 +16,11 @@
       get { return ".tif"; }
     }
 
+    public string ImageRoot
+    {
+      get { return @"\\Nasdee\HortImages"; }
+    }
+
     public string ThumbnailRoot
     {
       get { return @"\\DMZ\HortThumbnails"; }

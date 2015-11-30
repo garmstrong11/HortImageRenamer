@@ -4,11 +4,11 @@
   using HortImageRenamer.Domain;
   using HortImageRenamer.ServiceInterfaces;
 
-  public class SimplePlantLibraryService : IPlantLibraryService
+  public class PlantLibraryService : IPlantLibraryService
   {
     private readonly IPlantLibraryRepository _repository;
 
-    public SimplePlantLibraryService(IPlantLibraryRepository repository)
+    public PlantLibraryService(IPlantLibraryRepository repository)
     {
       _repository = repository;
     }

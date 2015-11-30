@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DapperPlantFieldUsageRepository.cs" />
     <Compile Include="DapperPlantLibraryRepository.cs" />
     <Compile Include="DapperPlantPhotoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HortImageRenamer.Core\HortImageRenamer.Core.csproj">
+      <Project>{1a4bbb19-751f-4be1-b147-032ed1e0e815}</Project>
+      <Name>HortImageRenamer.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HortImageRenamer.Domain\HortImageRenamer.Domain.csproj">
       <Project>{64930d04-77bd-4ae4-98f9-f71b26f58bc2}</Project>
       <Name>HortImageRenamer.Domain</Name>

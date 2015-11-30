@@ -24,9 +24,14 @@
         new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
 
       var result = _repository.GetPlantPhotosForRename()
-        .Where(r => blackList.Contains(r.ExtensionLower));
+        .Where(r => !blackList.Contains(r.ExtensionLower));
 
       return result;
+    }
+
+    public int RenamePlantPhoto(PlantPhoto photo)
+    {
+      throw new NotImplementedException();
     }
   }
 }

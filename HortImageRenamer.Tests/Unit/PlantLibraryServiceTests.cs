@@ -8,7 +8,7 @@
   using NUnit.Framework;
 
   [TestFixture]
-  public class SimplePlantLibraryServiceTests
+  public class PlantLibraryServiceTests
   {
     [Test]
     public void ReturnsCorrectString()
@@ -35,7 +35,7 @@
       };
 
       A.CallTo(() => repo.GetImageFieldIds()).Returns(new List<PlantLibrary> {lib1, lib2});
-      var svc = new SimplePlantLibraryService(repo);
+      var svc = new PlantLibraryService(repo);
 
       var actual = svc.GetImageFieldIds();
 

@@ -17,5 +17,14 @@
 
       result.Should().NotBeEmpty();
     }
+
+    [Test]
+    public void CanRenamePhoto()
+    {
+      var repo = new DapperPlantPhotoRepository(new TestConnectionService());
+      var result = repo.UpdatePlantPhotoId("1000001");
+
+      result.Should().Be(1);
+    }
   }
 }

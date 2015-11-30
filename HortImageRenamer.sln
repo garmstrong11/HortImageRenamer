@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HortImageRenamer.DapperRepo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HortImageRenamer.Core", "HortImageRenamer.Core\HortImageRenamer.Core.csproj", "{1A4BBB19-751F-4BE1-B147-032ED1E0E815}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HortImageRenamer.ConnectUnc", "HortImageRenamer.ConnectUnc\HortImageRenamer.ConnectUnc.csproj", "{803F6449-B849-4A19-BD4B-D643871E3C3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{1A4BBB19-751F-4BE1-B147-032ED1E0E815}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A4BBB19-751F-4BE1-B147-032ED1E0E815}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A4BBB19-751F-4BE1-B147-032ED1E0E815}.Release|Any CPU.Build.0 = Release|Any CPU
+		{803F6449-B849-4A19-BD4B-D643871E3C3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803F6449-B849-4A19-BD4B-D643871E3C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803F6449-B849-4A19-BD4B-D643871E3C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803F6449-B849-4A19-BD4B-D643871E3C3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
