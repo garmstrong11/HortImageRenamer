@@ -30,9 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ChinhDo.Transactions">
+      <HintPath>..\Lib\ChinhDo.Transactions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageRenameService.cs" />
     <Compile Include="PlantFieldUsageService.cs" />
     <Compile Include="PlantPhotoService.cs" />
     <Compile Include="ProductionConnectionService.cs" />
@@ -48,6 +53,10 @@
     <Compile Include="TestConnectionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HortImageRenamer.ConnectUnc\HortImageRenamer.ConnectUnc.csproj">
+      <Project>{803f6449-b849-4a19-bd4b-d643871e3c3b}</Project>
+      <Name>HortImageRenamer.ConnectUnc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HortImageRenamer.Core\HortImageRenamer.Core.csproj">
       <Project>{1a4bbb19-751f-4be1-b147-032ed1e0e815}</Project>
       <Name>HortImageRenamer.Core</Name>

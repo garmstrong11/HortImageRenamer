@@ -1,5 +1,6 @@
 ﻿namespace HortImageRenamer.Tests.Integration
 {
+  using System;
   using System.Linq;
   using FluentAssertions;
   using HortImageRenamer.DapperRepositories;
@@ -22,7 +23,7 @@
     public void CanRenamePhoto()
     {
       var repo = new DapperPlantPhotoRepository(new TestConnectionService());
-      var result = repo.UpdatePlantPhotoId("1000001");
+      var result = repo.UpdatePlantPhotoId("1000001", DateTime.Now);
 
       result.Should().Be(1);
     }

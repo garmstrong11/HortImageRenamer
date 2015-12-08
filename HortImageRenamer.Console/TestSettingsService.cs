@@ -1,13 +1,13 @@
-﻿namespace HortImageRenamer.Tests
+﻿namespace HortImageRenamer.Console
 {
   using System.Collections.Generic;
   using HortImageRenamer.Core;
 
-  public class FakeSettingsService : ISettingsService
+  public class TestSettingsService : ISettingsService
   {
     public string LegalExtensions
     {
-      get { return ".eps|.esp|.tif|.tiff|.jpg|.jpeg|.pdf|.bmp"; }
+      get { return ".eps|.esp|.tif|.tiff|.jp|.jpg|.jpeg|.pdf|.bmp"; }
     }
 
     public string TargetExtension
@@ -23,6 +23,10 @@
     public IEnumerable<string> ThumbnailRoots
     {
       get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortThumbnails"}; }
-    } 
-  }
+    }
+
+    public string ConnectionStringName
+    {
+      get { return "HortProdTest"; }
+    }
 }

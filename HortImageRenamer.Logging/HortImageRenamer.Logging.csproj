@@ -4,18 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{56B7B9CD-9E9B-4382-A70F-849FEE5078F6}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{339525A2-237E-44F3-A591-6FDA532E1ED2}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HortImageRenamer.Console</RootNamespace>
-    <AssemblyName>HortImageRenamer.Console</AssemblyName>
+    <RootNamespace>HortImageRenamer.Logging</RootNamespace>
+    <AssemblyName>HortImageRenamer.Logging</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +24,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,10 +36,6 @@
       <HintPath>..\packages\NLog.4.2.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.1.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.1.1\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,17 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="NlogLoggerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="TestSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -69,39 +56,11 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HortImageRenamer.ConnectUnc\HortImageRenamer.ConnectUnc.csproj">
-      <Project>{803f6449-b849-4a19-bd4b-d643871e3c3b}</Project>
-      <Name>HortImageRenamer.ConnectUnc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HortImageRenamer.Core\HortImageRenamer.Core.csproj">
-      <Project>{1a4bbb19-751f-4be1-b147-032ed1e0e815}</Project>
-      <Name>HortImageRenamer.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HortImageRenamer.DapperRepositories\HortImageRenamer.DapperRepositories.csproj">
-      <Project>{e90d3dcc-f6d8-4868-9af2-7202301db269}</Project>
-      <Name>HortImageRenamer.DapperRepositories</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HortImageRenamer.Domain\HortImageRenamer.Domain.csproj">
       <Project>{64930d04-77bd-4ae4-98f9-f71b26f58bc2}</Project>
       <Name>HortImageRenamer.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HortImageRenamer.Logging\HortImageRenamer.Logging.csproj">
-      <Project>{339525a2-237e-44f3-a591-6fda532e1ed2}</Project>
-      <Name>HortImageRenamer.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HortImageRenamer.ServiceImplementations\HortImageRenamer.ServiceImplementations.csproj">
-      <Project>{2a00da05-78de-463b-a158-5a06a808190e}</Project>
-      <Name>HortImageRenamer.ServiceImplementations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HortImageRenamer.ServiceInterfaces\HortImageRenamer.ServiceInterfaces.csproj">
-      <Project>{42028e60-9cec-4865-a4db-c56eb5b900df}</Project>
-      <Name>HortImageRenamer.ServiceInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

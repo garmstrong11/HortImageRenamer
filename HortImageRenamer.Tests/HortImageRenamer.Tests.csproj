@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ChinhDo.Transactions">
+      <HintPath>..\Lib\ChinhDo.Transactions.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
@@ -67,6 +70,7 @@
     <Compile Include="Integration\DapperPlantLibraryRepositoryTests.cs" />
     <Compile Include="Integration\DapperPlantPhotoRepositoryTests.cs" />
     <Compile Include="Integration\DbAccessTests.cs" />
+    <Compile Include="Integration\ImageRenameServiceTests.cs" />
     <Compile Include="Integration\PlantFieldUsageServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\PlantPhotoServiceTests.cs" />

@@ -29,9 +29,9 @@
       return result;
     }
 
-    public int RenamePlantPhoto(PlantPhoto photo)
+    public int RenamePlantPhoto(PlantPhoto photo, DateTime modifiedDate)
     {
-      throw new NotImplementedException();
+      return _repository.UpdatePlantPhotoId(photo.PhotoId, modifiedDate);
     }
   }
 }

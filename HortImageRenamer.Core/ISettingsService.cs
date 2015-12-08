@@ -1,5 +1,7 @@
 ﻿namespace HortImageRenamer.Core
 {
+  using System.Collections.Generic;
+
   public interface ISettingsService
   {
     /// <summary>
@@ -15,11 +17,16 @@
     /// <summary>
     /// The root path of the directory that contains high resolution images.
     /// </summary>
-    string ImageRoot { get; }
+    IEnumerable<string> ImageRoots { get; }
 
     /// <summary>
     /// The root path of the directory that contains thumbnail images.
     /// </summary>
-    string ThumbnailRoot { get; }
+    IEnumerable<string> ThumbnailRoots { get; }
+
+    /// <summary>
+    /// The connection string name for the db connection
+    /// </summary>
+    string ConnectionStringName { get; }
   }
 }

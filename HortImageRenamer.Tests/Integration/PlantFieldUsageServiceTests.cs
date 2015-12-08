@@ -17,6 +17,7 @@
       var libSvc = new PlantLibraryService(libRepo);
       var usageRepository = new DapperPlantFieldUsageRepository(conn);
       var service = new PlantFieldUsageService(usageRepository, libSvc);
+
       service.Initialize();
 
       var result = service.UpdateUsagesForPhotoId("1000001");

@@ -1,5 +1,6 @@
 ﻿namespace HortImageRenamer.ServiceInterfaces
 {
+  using System;
   using System.Collections.Generic;
   using HortImageRenamer.Domain;
 
@@ -7,6 +8,6 @@
   {
     IEnumerable<PlantPhoto> GetRenameCandidates();
 
-    int RenamePlantPhoto(PlantPhoto photo);
+    int RenamePlantPhoto(PlantPhoto photo, DateTime modifiedDate);
   }
 }

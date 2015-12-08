@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IConnectionService.cs" />
+    <Compile Include="IImageRenameService.cs" />
     <Compile Include="IPlantFieldUsageService.cs" />
     <Compile Include="IPlantLibraryService.cs" />
     <Compile Include="IPlantPhotoService.cs" />

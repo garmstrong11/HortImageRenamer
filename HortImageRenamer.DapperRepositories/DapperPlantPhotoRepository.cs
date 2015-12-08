@@ -3,6 +3,7 @@
   using System;
   using System.Collections.Generic;
   using Dapper;
+  using HortImageRenamer.Core;
   using HortImageRenamer.Domain;
   using HortImageRenamer.ServiceInterfaces;
 
@@ -28,15 +29,15 @@
       return result;
     }
 
-    public int UpdatePlantPhotoId(string photoId)
+    public int UpdatePlantPhotoId(string photoId, DateTime modifiedDate)
     {
       int result;
       using (var conn = OpenConnection()) {
         result = conn.Execute(_renamePhotoQuery,
           new {
             OldPhotoId = photoId, 
-            NewPhotoId = string.Format("{0}.tif", photoId), 
-            NewUpdatedAt = DateTime.Now
+            NewPhotoId = photoId.AddTif(), 
+            NewUpdatedAt = modifiedDate
           });
       }
       return result;
