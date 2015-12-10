@@ -1,18 +1,21 @@
 ﻿namespace HortImageRenamer.DapperRepositories
 {
   using System;
+  using System.Data.SqlClient;
+  using System.Text;
   using Dapper;
   using HortImageRenamer.Core;
   using HortImageRenamer.Domain;
-  using HortImageRenamer.ServiceInterfaces;
 
-  public class DapperPlantFieldUsageRepository : RepositoryBase, IPlantFieldUsageRepository
+  public class DapperPlantFieldUsageRepository : IPlantFieldUsageRepository
   {
+    private readonly ISettingsService _settingsService;
     private string _updateQuery = string.Empty;
     
-    public DapperPlantFieldUsageRepository(IConnectionService connectionService) 
-      : base(connectionService)
-    {}
+    public DapperPlantFieldUsageRepository(ISettingsService settingsService)
+    {
+      _settingsService = settingsService;
+    }
 
     public int UpdatePhotoFieldValues(string photoId)
     {
@@ -27,7 +30,7 @@
       };
 
       int result;
-      using (var conn = OpenConnection()) {
+      using (var conn = new SqlConnection(_settingsService.ConnectionString)) {
         result = conn.Execute(_updateQuery, parms);
       }
 
@@ -36,14 +39,14 @@
 
     public void PrepareUpdateQuery(string photoFieldIds)
     {
-      QueryBuilder.Clear();
+      var qb = new StringBuilder();
 
-      QueryBuilder.Append("UPDATE tblPlantFieldUsage ");
-      QueryBuilder.Append("SET FieldValue = @NewPhotoId ");
-      QueryBuilder.Append("WHERE FieldValue = @PhotoId ");
-      QueryBuilder.AppendFormat("AND CustomFieldID IN ({0})", photoFieldIds);
+      qb.Append("UPDATE tblPlantFieldUsage ");
+      qb.Append("SET FieldValue = @NewPhotoId ");
+      qb.Append("WHERE FieldValue = @PhotoId ");
+      qb.AppendFormat("AND CustomFieldID IN ({0})", photoFieldIds);
 
-      _updateQuery = QueryBuilder.ToString();
+      _updateQuery = qb.ToString();
     }
   }
 }

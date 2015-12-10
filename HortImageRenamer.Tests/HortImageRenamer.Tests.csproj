@@ -65,7 +65,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FakeSettingsService.cs" />
     <Compile Include="Integration\DapperPlantFieldUsageRepositoryTests.cs" />
     <Compile Include="Integration\DapperPlantLibraryRepositoryTests.cs" />
     <Compile Include="Integration\DapperPlantPhotoRepositoryTests.cs" />

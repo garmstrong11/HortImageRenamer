@@ -44,6 +44,7 @@
     <Compile Include="IPlantFieldUsageService.cs" />
     <Compile Include="IPlantLibraryService.cs" />
     <Compile Include="IPlantPhotoService.cs" />
+    <Compile Include="ITransactionalImageRenamer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

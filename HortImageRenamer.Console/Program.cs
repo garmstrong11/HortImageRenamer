@@ -22,17 +22,16 @@
       var log = LogManager.GetLogger("logConsole");
 
       var container = ConfigureContainer();
-      var count = 10;
+      var count = 1;
       var libSvc = container.GetInstance<IPlantPhotoService>();
-      var renameSvc = container.GetInstance<IImageRenameService>();
+      var renameSvc = container.GetInstance<ITransactionalImageRenamer>();
 
       var candidates = libSvc.GetRenameCandidates().Take(count).ToList();
       log.Info("There are {0} instances to rename", candidates.Count);
       var counter = 1;
-      var now = DateTime.Now;
 
       foreach (var plantPhoto in candidates) {
-        renameSvc.RenameImage(plantPhoto, now);
+        renameSvc.RenameImageAndUsages(plantPhoto);
         log.Info("Renamed {0} of {1}", counter++, count);
       }
 
@@ -45,18 +44,19 @@
 
       // Reset this line to reconfigure for production
       container.RegisterSingleton<ISettingsService>(new TestSettingsService());
+      //container.RegisterSingleton<ISettingsService>(new ProductionSettingsService());
 
       container.Register<ILogger, NlogLoggerAdapter>();
       container.RegisterSingleton<IPlantLibraryRepository, DapperPlantLibraryRepository>();
       container.RegisterSingleton<IPlantPhotoRepository, DapperPlantPhotoRepository>();
       container.RegisterSingleton<IPlantFieldUsageRepository, DapperPlantFieldUsageRepository>();
-      container.RegisterSingleton<IConnectionService, TestConnectionService>();
       container.RegisterSingleton<IPlantLibraryService, PlantLibraryService>();
       container.RegisterSingleton<IPlantPhotoService, PlantPhotoService>();
       container.RegisterSingleton<IPlantFieldUsageService, PlantFieldUsageService>();
-      container.RegisterSingleton<IImageRenameService, ImageRenameService>();
+      container.RegisterSingleton<ITransactionalImageRenamer, TransactionalImageRenamer>();
 
-      container.RegisterInitializer<IImageRenameService>(svc => {
+      container.RegisterInitializer<ITransactionalImageRenamer>(svc =>
+      {
         svc.Logger = new NlogLoggerAdapter(LogManager.GetLogger("logFile"));
       });
 

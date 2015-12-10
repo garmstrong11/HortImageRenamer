@@ -3,8 +3,8 @@
   using System;
   using FakeItEasy;
   using FluentAssertions;
+  using HortImageRenamer.Console;
   using HortImageRenamer.DapperRepositories;
-  using HortImageRenamer.ServiceImplementations;
   using NUnit.Framework;
 
   [TestFixture]
@@ -13,9 +13,8 @@
     [Test]
     public void EmptyPhotoFieldsList_Throws()
     {
-      var settings = new FakeSettingsService();
-      var conn = new TestConnectionService(settings);
-      var repo = new DapperPlantFieldUsageRepository(conn);
+      var settings = new TestSettingsService();
+      var repo = new DapperPlantFieldUsageRepository(settings);
 
       Action act = () => repo.UpdatePhotoFieldValues(A<string>._);
 
@@ -25,9 +24,8 @@
     [Test]
     public void CanUpdateUsages()
     {
-      var settings = new FakeSettingsService();
-      var conn = new TestConnectionService(settings);
-      var repo = new DapperPlantFieldUsageRepository(conn);
+      var settings = new TestSettingsService();
+      var repo = new DapperPlantFieldUsageRepository(settings);
       const string fieldList = "14, 1522";
 
       repo.PrepareUpdateQuery(fieldList);

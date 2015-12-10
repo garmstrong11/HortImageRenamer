@@ -3,6 +3,7 @@
   using System.Collections.Generic;
   using System.Linq;
   using FluentAssertions;
+  using HortImageRenamer.Console;
   using HortImageRenamer.DapperRepositories;
   using HortImageRenamer.ServiceImplementations;
   using NUnit.Framework;
@@ -13,8 +14,8 @@
     [Test]
     public void CanAcquireRenameCandidates()
     {
-      var settings = new FakeSettingsService();
-      var repo = new DapperPlantPhotoRepository(new TestConnectionService(settings));
+      var settings = new TestSettingsService();
+      var repo = new DapperPlantPhotoRepository(settings);
       var svc = new PlantPhotoService(settings, repo);
 
       var actual = svc.GetRenameCandidates();

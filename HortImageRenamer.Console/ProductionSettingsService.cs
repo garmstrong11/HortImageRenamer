@@ -17,12 +17,7 @@
 
     public IEnumerable<string> ImageRoots
     {
-      get { return new List<string>
-        {
-          @"\\Storage1\HortImages",
-          @"\\nasdee\HortImages"
-        }; 
-      }
+      get { return new List<string> { @"\\Storage1\HortImages", @"\\nasdee\HortImages" }; }
     }
 
     public IEnumerable<string> ThumbnailRoots
@@ -30,9 +25,9 @@
       get { return new List<string> { @"\\DMZ\HortThumbnails" }; }
     }
 
-    public string ConnectionStringName
+    public string ConnectionString
     {
-      get { return "HortProd"; }
+      get { return @"Data Source=Armadillo; Initial Catalog=HortProduction; Integrated Security=true"; }
     }
   }
 }

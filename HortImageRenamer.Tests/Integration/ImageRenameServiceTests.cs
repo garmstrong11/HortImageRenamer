@@ -14,15 +14,13 @@
     [Test]
     public void CanRenameTransactionally()
     {
-      var settings = new FakeSettingsService();
-      var connSvc = new TestConnectionService(settings);
-      var photoRepo = new DapperPlantPhotoRepository(connSvc);
-      var usageRepo = new DapperPlantFieldUsageRepository(connSvc);
-      var libraryRepo = new DapperPlantLibraryRepository(connSvc);
+      var settings = new TestSettingsService();
+      var photoRepo = new DapperPlantPhotoRepository(settings);
+      var usageRepo = new DapperPlantFieldUsageRepository(settings);
+      var libraryRepo = new DapperPlantLibraryRepository(settings);
       var photoService = new PlantPhotoService(settings, photoRepo);
       var libService = new PlantLibraryService(libraryRepo);
       var usageService = new PlantFieldUsageService(usageRepo, libService);
-      var fileManager = new TxFileManager();
 
       var plantPhoto = new PlantPhoto
       {
@@ -39,11 +37,9 @@
     public void RenameOnePhoto()
     {
       var settings = new TestSettingsService();
-
-      var connSvc = new TestConnectionService(settings);
-      var photoRepo = new DapperPlantPhotoRepository(connSvc);
-      var usageRepo = new DapperPlantFieldUsageRepository(connSvc);
-      var libraryRepo = new DapperPlantLibraryRepository(connSvc);
+      var photoRepo = new DapperPlantPhotoRepository(settings);
+      var usageRepo = new DapperPlantFieldUsageRepository(settings);
+      var libraryRepo = new DapperPlantLibraryRepository(settings);
       var photoService = new PlantPhotoService(settings, photoRepo);
       var libService = new PlantLibraryService(libraryRepo);
       var usageService = new PlantFieldUsageService(usageRepo, libService);

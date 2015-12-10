@@ -25,9 +25,10 @@
       get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortThumbnails"}; }
     }
 
-    public string ConnectionStringName
+    public string ConnectionString
     {
-      get { return "HortProdTest"; }
+      get { return @"Data Source=(localdb)\ProjectsV12; Initial Catalog=HortProd; Integrated Security=true"; }
+      
     }
   }
 }

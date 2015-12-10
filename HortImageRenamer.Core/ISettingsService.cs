@@ -15,18 +15,18 @@
     string TargetExtension { get; }
 
     /// <summary>
-    /// The root path of the directory that contains high resolution images.
+    /// The root paths of the directories that contains high resolution images.
     /// </summary>
     IEnumerable<string> ImageRoots { get; }
 
     /// <summary>
-    /// The root path of the directory that contains thumbnail images.
+    /// The root paths of the directories that contains thumbnail images.
     /// </summary>
     IEnumerable<string> ThumbnailRoots { get; }
 
     /// <summary>
-    /// The connection string name for the db connection
+    /// The connection string for hort db, test or production
     /// </summary>
-    string ConnectionStringName { get; }
+    string ConnectionString { get; }
   }
 }

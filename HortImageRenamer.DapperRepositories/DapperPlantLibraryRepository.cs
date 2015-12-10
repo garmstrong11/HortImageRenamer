@@ -1,22 +1,26 @@
 ﻿namespace HortImageRenamer.DapperRepositories
 {
   using System.Collections.Generic;
+  using System.Data.SqlClient;
+  using System.Text;
   using Dapper;
+  using HortImageRenamer.Core;
   using HortImageRenamer.Domain;
-  using HortImageRenamer.ServiceInterfaces;
 
-  public class DapperPlantLibraryRepository : RepositoryBase, IPlantLibraryRepository
+  public class DapperPlantLibraryRepository : IPlantLibraryRepository
   {
-    public DapperPlantLibraryRepository(IConnectionService connectionService) 
-      : base(connectionService)
+    private readonly ISettingsService _settingsService;
+
+    public DapperPlantLibraryRepository(ISettingsService settingsService)
     {
+      _settingsService = settingsService;
     }
 
     public IEnumerable<PlantLibrary> GetImageFieldIds()
     {
       IEnumerable<PlantLibrary> result;
 
-      using (var conn = OpenConnection()) {
+      using (var conn = new SqlConnection(_settingsService.ConnectionString)) {
         var query = GetPlantLibraryImageIdQuery();
         result = conn.Query<PlantLibrary>(query);
       }
@@ -26,18 +30,18 @@
 
     private static string GetPlantLibraryImageIdQuery()
     {
-      QueryBuilder.Clear();
+      var qb = new StringBuilder();
 
-      QueryBuilder.Append("SELECT PlantLibraryID AS Id, ");
-      QueryBuilder.Append("[Name], ");
-      QueryBuilder.Append("PhotoFieldID AS PhotoFieldId, ");
-      QueryBuilder.Append("InsetFieldID AS InsetFieldId, ");
-      QueryBuilder.Append("Inset2FieldID AS Inset2FieldId, ");
-      QueryBuilder.Append("Inset3FieldID AS Inset3FieldId, ");
-      QueryBuilder.Append("Inset4FieldID AS Inset4FieldId ");
-      QueryBuilder.Append("FROM tblPlantLibrary");
+      qb.Append("SELECT PlantLibraryID AS Id, ");
+      qb.Append("[Name], ");
+      qb.Append("PhotoFieldID AS PhotoFieldId, ");
+      qb.Append("InsetFieldID AS InsetFieldId, ");
+      qb.Append("Inset2FieldID AS Inset2FieldId, ");
+      qb.Append("Inset3FieldID AS Inset3FieldId, ");
+      qb.Append("Inset4FieldID AS Inset4FieldId ");
+      qb.Append("FROM tblPlantLibrary");
 
-      return QueryBuilder.ToString();
+      return qb.ToString();
     }
   }
 }

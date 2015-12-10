@@ -5,7 +5,6 @@
   using FluentAssertions;
   using HortImageRenamer.Console;
   using HortImageRenamer.DapperRepositories;
-  using HortImageRenamer.ServiceImplementations;
   using NUnit.Framework;
 
   [TestFixture]
@@ -14,8 +13,8 @@
     [Test]
     public void CanGetPhotosToRename()
     {
-      var settings = new FakeSettingsService();
-      var repo = new DapperPlantPhotoRepository(new TestConnectionService(settings));
+      var settings = new TestSettingsService();
+      var repo = new DapperPlantPhotoRepository(settings);
       var result = repo.GetPlantPhotosForRename().ToList();
 
       result.Should().NotBeEmpty();
@@ -24,8 +23,8 @@
     [Test]
     public void CanRenamePhoto()
     {
-      var settings = new FakeSettingsService();
-      var repo = new DapperPlantPhotoRepository(new TestConnectionService(settings));
+      var settings = new TestSettingsService();
+      var repo = new DapperPlantPhotoRepository(settings);
       var result = repo.UpdatePlantPhotoId("1000001", DateTime.Now);
 
       result.Should().Be(1);
@@ -35,7 +34,7 @@
     public void CanFindById()
     {
       var settings = new TestSettingsService();
-      var repo = new DapperPlantPhotoRepository(new TestConnectionService(settings));
+      var repo = new DapperPlantPhotoRepository(settings);
       var result = repo.FindById("1000001.tif");
 
       result.First().PhotoId.Should().Be("1000001.tif");

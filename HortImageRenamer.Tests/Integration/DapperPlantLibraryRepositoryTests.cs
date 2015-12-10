@@ -2,8 +2,8 @@
 {
   using System.Linq;
   using FluentAssertions;
+  using HortImageRenamer.Console;
   using HortImageRenamer.DapperRepositories;
-  using HortImageRenamer.ServiceImplementations;
   using NUnit.Framework;
 
   [TestFixture]
@@ -12,10 +12,8 @@
     [Test]
     public void CanGetLibraryIds()
     {
-      var settings = new FakeSettingsService();
-      var connectionService = new TestConnectionService(settings);
-      //var connectionService = new ProductionConnectionService();
-      var repo = new DapperPlantLibraryRepository(connectionService);
+      var settings = new TestSettingsService();
+      var repo = new DapperPlantLibraryRepository(settings);
 
       var result = repo.GetImageFieldIds();
 

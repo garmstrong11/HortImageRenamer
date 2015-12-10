@@ -2,49 +2,39 @@
 {
   using System.Data.SqlClient;
   using System.Linq;
-  using System.Text;
   using Dapper;
   using FluentAssertions;
-  using HortImageRenamer.Domain;
-  using HortImageRenamer.ServiceImplementations;
+  using HortImageRenamer.Console;
   using NUnit.Framework;
 
   [TestFixture]
   public class DbAccessTests
   {
     [Test]
-    public void CanConnect()
+    public void CanConnectToTestDb()
     {
-      var settings = new FakeSettingsService();
-      var conServ = new TestConnectionService(settings);;
+      var settings = new TestSettingsService();
 
-      using (var conn = new SqlConnection(conServ.GetConnectionString())) {
-        var sb = new StringBuilder();
-        sb.Append("SELECT PlantLibraryID AS Id, ");
-        sb.Append("[Name], ");
-        sb.Append("PhotoFieldID AS PhotoFieldId, ");
-        sb.Append("InsetFieldID AS InsetFieldId, ");
-        sb.Append("Inset2FieldID AS Inset2FieldId, ");
-        sb.Append("Inset3FieldID AS Inset3FieldId, ");
-        sb.Append("Inset4FieldID AS Inset4FieldId ");
-        sb.Append("FROM tblPlantLibrary");
+      using (var conn = new SqlConnection(settings.ConnectionString))
+      {
+        const string query = "SELECT db_name()";
+        var result = conn.Query<string>(query).ToList();
 
-        var query = sb.ToString();
-        var result = conn.Query<PlantLibrary>(query).ToList();
+        result.First().Should().Be("HortProd");
+      }
+    }
 
-        var ids = result.Select(p => p.PhotoFieldId)
-          .Concat(result.Select(p => p.InsetFieldId))
-          .Concat(result.Select(p => p.Inset2FieldId))
-          .Concat(result.Select(p => p.Inset3FieldId))
-          .Concat(result.Select(p => p.Inset4FieldId))
-          .Where(k => k.HasValue)
-          .Cast<int>()
-          .Distinct()
-          .OrderBy(k => k)
-          .ToList();
+    [Test]
+    public void CanConnectToProductionDb()
+    {
+      var settings = new ProductionSettingsService();
 
-        conn.Close();
-        ids.Any().Should().BeTrue();
+      using (var conn = new SqlConnection(settings.ConnectionString))
+      {
+        const string query = "SELECT db_name()";
+        var result = conn.Query<string>(query).ToList();
+
+        result.First().Should().Be("HortProduction");
       }
     }
   }

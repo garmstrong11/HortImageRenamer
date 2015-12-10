@@ -3,25 +3,22 @@
   using System.Data;
   using System.Data.SqlClient;
   using System.Text;
-  using HortImageRenamer.ServiceInterfaces;
+  using HortImageRenamer.Core;
 
   public abstract class RepositoryBase
   {
-    private readonly IConnectionService _connectionService;
+    private readonly IDbConnection _dbConnection;
     protected static StringBuilder QueryBuilder = new StringBuilder();
 
-    protected RepositoryBase(IConnectionService connectionService)
+    protected RepositoryBase(ISettingsService settings)
     {
-      _connectionService = connectionService;
+      _dbConnection = new SqlConnection(settings.ConnectionString);
+      _dbConnection.Open();
     }
-    
+
     protected IDbConnection OpenConnection()
     {
-      IDbConnection connection = 
-        new SqlConnection(_connectionService.GetConnectionString());
-
-      connection.Open();
-      return connection;
+      return _dbConnection;
     } 
   }
 }
