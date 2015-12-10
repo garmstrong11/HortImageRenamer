@@ -15,7 +15,8 @@
     [Test]
     public void CanConnect()
     {
-      var conServ = new TestConnectionService();;
+      var settings = new FakeSettingsService();
+      var conServ = new TestConnectionService(settings);;
 
       using (var conn = new SqlConnection(conServ.GetConnectionString())) {
         var sb = new StringBuilder();

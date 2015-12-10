@@ -14,7 +14,7 @@
     public void CanAcquireRenameCandidates()
     {
       var settings = new FakeSettingsService();
-      var repo = new DapperPlantPhotoRepository(new TestConnectionService());
+      var repo = new DapperPlantPhotoRepository(new TestConnectionService(settings));
       var svc = new PlantPhotoService(settings, repo);
 
       var actual = svc.GetRenameCandidates();

@@ -64,6 +64,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HortImageRenamer.Core\HortImageRenamer.Core.csproj">
+      <Project>{1a4bbb19-751f-4be1-b147-032ed1e0e815}</Project>
+      <Name>HortImageRenamer.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

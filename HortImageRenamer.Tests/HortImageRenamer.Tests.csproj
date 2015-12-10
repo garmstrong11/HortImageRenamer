@@ -75,12 +75,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\PlantPhotoServiceTests.cs" />
     <Compile Include="Unit\PlantLibraryServiceTests.cs" />
+    <Compile Include="Unit\ProductionSettingsServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HortImageRenamer.Console\HortImageRenamer.Console.csproj">
+      <Project>{56b7b9cd-9e9b-4382-a70f-849fee5078f6}</Project>
+      <Name>HortImageRenamer.Console</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HortImageRenamer.Core\HortImageRenamer.Core.csproj">
       <Project>{1a4bbb19-751f-4be1-b147-032ed1e0e815}</Project>
       <Name>HortImageRenamer.Core</Name>

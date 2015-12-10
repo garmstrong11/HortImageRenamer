@@ -33,5 +33,10 @@
     {
       return _repository.UpdatePlantPhotoId(photo.PhotoId, modifiedDate);
     }
+
+    public Maybe<PlantPhoto> FindById(string photoId)
+    {
+      return _repository.FindById(photoId);
+    }
   }
 }

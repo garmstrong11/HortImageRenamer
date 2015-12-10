@@ -2,6 +2,7 @@
 {
   using System;
   using System.IO;
+  using System.Linq;
   using System.Transactions;
   using ChinhDo.Transactions;
   //using HortImageRenamer.ConnectUnc;
@@ -77,6 +78,19 @@
       catch (Exception exc) {
         Logger.Error(string.Format("{0}\t{1}", plantPhoto.PhotoId, exc.Message.Replace(Environment.NewLine, " ")));
       }
+    }
+
+    public void RenameImage(string photoId, DateTime modifiedDate)
+    {
+      if (string.IsNullOrWhiteSpace(photoId)) throw new ArgumentNullException("photoId");
+
+      var maybePlantPhoto = _plantPhotoService.FindById(photoId);
+
+      if (!maybePlantPhoto.Any()) {
+        throw new ArgumentException(@"PlantPhoto not found for the PlantID", photoId);
+      }
+
+      RenameImage(maybePlantPhoto.First(), modifiedDate);
     }
 
     public ILogger Logger { get; set; }

@@ -3,7 +3,7 @@
   using System.Collections.Generic;
   using HortImageRenamer.Core;
 
-  public class TestSettingsService : ISettingsService
+  public class ProductionSettingsService : ISettingsService
   {
     public string LegalExtensions
     {
@@ -17,17 +17,22 @@
 
     public IEnumerable<string> ImageRoots
     {
-      get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortImages"}; }
+      get { return new List<string>
+        {
+          @"\\Storage1\HortImages",
+          @"\\nasdee\HortImages"
+        }; 
+      }
     }
 
     public IEnumerable<string> ThumbnailRoots
     {
-      get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortThumbnails"}; }
+      get { return new List<string> { @"\\DMZ\HortThumbnails" }; }
     }
 
     public string ConnectionStringName
     {
-      get { return "HortProdTest"; }
+      get { return "HortProd"; }
     }
   }
 }

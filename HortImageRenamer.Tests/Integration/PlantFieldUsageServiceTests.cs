@@ -11,8 +11,8 @@
     [Test]
     public void CanUpdatePlantFieldUsages()
     {
-      
-      var conn = new TestConnectionService();
+      var settings = new FakeSettingsService();
+      var conn = new TestConnectionService(settings);
       var libRepo = new DapperPlantLibraryRepository(conn);
       var libSvc = new PlantLibraryService(libRepo);
       var usageRepository = new DapperPlantFieldUsageRepository(conn);

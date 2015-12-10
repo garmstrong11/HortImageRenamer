@@ -13,7 +13,8 @@
     [Test]
     public void EmptyPhotoFieldsList_Throws()
     {
-      var conn = new TestConnectionService();
+      var settings = new FakeSettingsService();
+      var conn = new TestConnectionService(settings);
       var repo = new DapperPlantFieldUsageRepository(conn);
 
       Action act = () => repo.UpdatePhotoFieldValues(A<string>._);
@@ -24,7 +25,8 @@
     [Test]
     public void CanUpdateUsages()
     {
-      var conn = new TestConnectionService();
+      var settings = new FakeSettingsService();
+      var conn = new TestConnectionService(settings);
       var repo = new DapperPlantFieldUsageRepository(conn);
       const string fieldList = "14, 1522";
 

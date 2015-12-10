@@ -12,7 +12,8 @@
     [Test]
     public void CanGetLibraryIds()
     {
-      var connectionService = new TestConnectionService();
+      var settings = new FakeSettingsService();
+      var connectionService = new TestConnectionService(settings);
       //var connectionService = new ProductionConnectionService();
       var repo = new DapperPlantLibraryRepository(connectionService);
 

@@ -36,12 +36,15 @@
         log.Info("Renamed {0} of {1}", counter++, count);
       }
 
-      System.Console.ReadLine();
+      Console.ReadLine();
     }
 
     private static Container ConfigureContainer()
     {
       var container = new Container();
+
+      // Reset this line to reconfigure for production
+      container.RegisterSingleton<ISettingsService>(new TestSettingsService());
 
       container.Register<ILogger, NlogLoggerAdapter>();
       container.RegisterSingleton<IPlantLibraryRepository, DapperPlantLibraryRepository>();
@@ -52,7 +55,6 @@
       container.RegisterSingleton<IPlantPhotoService, PlantPhotoService>();
       container.RegisterSingleton<IPlantFieldUsageService, PlantFieldUsageService>();
       container.RegisterSingleton<IImageRenameService, ImageRenameService>();
-      container.RegisterSingleton<ISettingsService>(new TestSettingsService());
 
       container.RegisterInitializer<IImageRenameService>(svc => {
         svc.Logger = new NlogLoggerAdapter(LogManager.GetLogger("logFile"));

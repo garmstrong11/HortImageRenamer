@@ -23,6 +23,11 @@
     public IEnumerable<string> ThumbnailRoots
     {
       get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortThumbnails"}; }
-    } 
+    }
+
+    public string ConnectionStringName
+    {
+      get { return "HortProdTest"; }
+    }
   }
 }
