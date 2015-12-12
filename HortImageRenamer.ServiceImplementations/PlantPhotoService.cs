@@ -2,7 +2,10 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Data.SqlClient;
   using System.Linq;
+  using System.Text;
+  using Dapper;
   using HortImageRenamer.Core;
   using HortImageRenamer.Domain;
   using HortImageRenamer.ServiceInterfaces;
@@ -10,33 +13,61 @@
   public class PlantPhotoService : IPlantPhotoService
   {
     private readonly ISettingsService _settings;
-    private readonly IPlantPhotoRepository _repository;
+    private readonly List<PlantPhoto> _plantPhotos; 
 
-    public PlantPhotoService(ISettingsService settings, IPlantPhotoRepository repository)
+    public PlantPhotoService(ISettingsService settings)
     {
       _settings = settings;
-      _repository = repository;
+      _plantPhotos = new List<PlantPhoto>();
     }
 
-    public IEnumerable<PlantPhoto> GetRenameCandidates()
+    #region Implementation of IPlantPhotoService
+
+    public void Initialize()
     {
-      var blackList = _settings.LegalExtensions.Split(
-        new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+      var whiteList = _settings.LegalExtensions.Split(
+        new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-      var result = _repository.GetPlantPhotosForRename()
-        .Where(r => !blackList.Contains(r.ExtensionLower));
+      IEnumerable<PlantPhoto> result;
 
-      return result;
+      using (var conn = new SqlConnection(_settings.ConnectionString))
+      {
+        conn.Open();
+        result = conn.Query<PlantPhoto>(BuildPhotoQuery());
+      }
+
+      _plantPhotos.AddRange(result.Where(r => !whiteList.Contains(r.ExtensionLower)));
     }
 
-    public int RenamePlantPhoto(PlantPhoto photo, DateTime modifiedDate)
+    public IEnumerable<PlantPhoto> PlantPhotos
     {
-      return _repository.UpdatePlantPhotoId(photo.PhotoId, modifiedDate);
+      get { return _plantPhotos.AsEnumerable(); }
     }
 
-    public Maybe<PlantPhoto> FindById(string photoId)
+    public bool TryFindPlantPhoto(string photoId, out PlantPhoto plantPhoto)
     {
-      return _repository.FindById(photoId);
+      var found = _plantPhotos.FirstOrDefault(p => p.PhotoId == photoId);
+
+      if (found == null) {
+        plantPhoto = new PlantPhoto {PhotoId = "Not found"};
+        return false;
+      }
+
+      plantPhoto = found;
+      return true;
+    }
+
+    #endregion
+
+    private static string BuildPhotoQuery()
+    {
+      var qb = new StringBuilder();
+
+      qb.Append("SELECT PhotoID AS PhotoId, Path AS PhotoPath, UpdatedAt ");
+      qb.Append("FROM tblPlantPhotos p ");
+      qb.Append("WHERE p.PATH IS NOT NULL AND p.Path NOT LIKE '%Photoshoots%'");
+
+      return qb.ToString();
     }
   }
 }

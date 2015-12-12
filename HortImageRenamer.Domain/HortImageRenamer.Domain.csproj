@@ -41,9 +41,6 @@
   <ItemGroup>
     <Compile Include="ConnectionType.cs" />
     <Compile Include="ILogger.cs" />
-    <Compile Include="IPlantFieldUsageRepository.cs" />
-    <Compile Include="IPlantLibraryRepository.cs" />
-    <Compile Include="IPlantPhotoRepository.cs" />
     <Compile Include="PlantLibrary.cs" />
     <Compile Include="PlantPhoto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

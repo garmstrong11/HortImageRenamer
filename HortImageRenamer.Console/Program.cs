@@ -1,10 +1,7 @@
 ﻿namespace HortImageRenamer.Console
 {
   using System;
-  using System.Linq;
   using HortImageRenamer.Core;
-  using HortImageRenamer.DapperRepositories;
-  using HortImageRenamer.Domain;
   using HortImageRenamer.Logging;
   using HortImageRenamer.ServiceImplementations;
   using HortImageRenamer.ServiceInterfaces;
@@ -19,21 +16,13 @@
     static void Main(string[] args)
     {
       LogManager.Configuration = ConfigureLogger();
-      var log = LogManager.GetLogger("logConsole");
-
       var container = ConfigureContainer();
-      var count = 1;
-      var libSvc = container.GetInstance<IPlantPhotoService>();
-      var renameSvc = container.GetInstance<ITransactionalImageRenamer>();
-
-      var candidates = libSvc.GetRenameCandidates().Take(count).ToList();
-      log.Info("There are {0} instances to rename", candidates.Count);
-      var counter = 1;
-
-      foreach (var plantPhoto in candidates) {
-        renameSvc.RenameImageAndUsages(plantPhoto);
-        log.Info("Renamed {0} of {1}", counter++, count);
-      }
+      var count = 100;
+      var opsManager = container.GetInstance<IRenameOperationsManager>();
+      opsManager.Initialize();
+     // opsManager.RenameCount(count);
+      opsManager.RenameAll();
+      //opsManager.RenameSingle("1746");
 
       Console.ReadLine();
     }
@@ -47,17 +36,18 @@
       //container.RegisterSingleton<ISettingsService>(new ProductionSettingsService());
 
       container.Register<ILogger, NlogLoggerAdapter>();
-      container.RegisterSingleton<IPlantLibraryRepository, DapperPlantLibraryRepository>();
-      container.RegisterSingleton<IPlantPhotoRepository, DapperPlantPhotoRepository>();
-      container.RegisterSingleton<IPlantFieldUsageRepository, DapperPlantFieldUsageRepository>();
-      container.RegisterSingleton<IPlantLibraryService, PlantLibraryService>();
       container.RegisterSingleton<IPlantPhotoService, PlantPhotoService>();
-      container.RegisterSingleton<IPlantFieldUsageService, PlantFieldUsageService>();
-      container.RegisterSingleton<ITransactionalImageRenamer, TransactionalImageRenamer>();
+      container.RegisterSingleton<IImageRenameService, ImageRenameService>();
+      container.RegisterSingleton<IRenameOperationsManager, RenameOperationsManager>();
 
-      container.RegisterInitializer<ITransactionalImageRenamer>(svc =>
+      container.RegisterInitializer<IImageRenameService>(svc =>
       {
         svc.Logger = new NlogLoggerAdapter(LogManager.GetLogger("logFile"));
+      });
+
+      container.RegisterInitializer<IRenameOperationsManager>(mgr =>
+      {
+        mgr.ConsoleLogger = new NlogLoggerAdapter(LogManager.GetLogger("logConsole"));
       });
 
       return container;

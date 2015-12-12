@@ -50,12 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageRenameService.cs" />
-    <Compile Include="PlantFieldUsageService.cs" />
     <Compile Include="PlantPhotoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PlantLibraryService.cs" />
-    <Compile Include="TransactionalImageRenamer.cs" />
+    <Compile Include="ImageRenameService.cs" />
+    <Compile Include="RenameOperationsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HortImageRenamer.ConnectUnc\HortImageRenamer.ConnectUnc.csproj">

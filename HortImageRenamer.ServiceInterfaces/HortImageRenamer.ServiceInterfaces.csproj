@@ -39,12 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IConnectionService.cs" />
     <Compile Include="IImageRenameService.cs" />
-    <Compile Include="IPlantFieldUsageService.cs" />
-    <Compile Include="IPlantLibraryService.cs" />
     <Compile Include="IPlantPhotoService.cs" />
-    <Compile Include="ITransactionalImageRenamer.cs" />
+    <Compile Include="IRenameOperationsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

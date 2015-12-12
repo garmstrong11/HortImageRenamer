@@ -1,54 +1,54 @@
 ﻿namespace HortImageRenamer.ServiceImplementations
 {
   using System;
+  using System.Collections.Generic;
+  using System.Data.SqlClient;
   using System.IO;
   using System.Linq;
+  using System.Text;
   using System.Transactions;
   using ChinhDo.Transactions;
-  //using HortImageRenamer.ConnectUnc;
+  using Dapper;
   using HortImageRenamer.Core;
   using HortImageRenamer.Domain;
   using HortImageRenamer.ServiceInterfaces;
 
   public class ImageRenameService : IImageRenameService
   {
-    private readonly IPlantPhotoService _plantPhotoService;
-    private readonly IPlantFieldUsageService _usageService;
+    private static readonly StringBuilder Qb = new StringBuilder();
     private readonly ISettingsService _settings;
-    //private readonly UncAccessWithCredentials _unc;
+    private readonly string _usageUpdateQuery;
+    private readonly string _photoUpdateQuery;
+    private readonly DateTime _now;
 
-    public ImageRenameService(
-      IPlantPhotoService plantPhotoService, 
-      IPlantFieldUsageService usageService,
-      ISettingsService settings)
+    public ImageRenameService(ISettingsService settings)
     {
-      if (plantPhotoService == null) throw new ArgumentNullException("plantPhotoService");
-      if (usageService == null) throw new ArgumentNullException("usageService");
-      if (settings == null) throw new ArgumentNullException("settings");
-
-      _plantPhotoService = plantPhotoService;
-      _usageService = usageService;
       _settings = settings;
-
-      _usageService.Initialize();
-
-    //  _unc = new UncAccessWithCredentials();
-    //  _unc.NetUseWithCredentials(
-    //    @"\\dmz.integracolor.local\HortThumbnails",
-    //    "Administrator",
-    //    "dmz", "N_5yDe_C#4");
+      _usageUpdateQuery = BuildUsageUpdateQuery();
+      _photoUpdateQuery = BuildPhotoUpdateQuery();
+      _now = DateTime.Now;
     }
-    
-    public void RenameImage(PlantPhoto plantPhoto, DateTime modifiedDate)
-    {
-      var dateString = modifiedDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
-      try {
-        var fileManager = new TxFileManager();
-        using (var scope = new TransactionScope()) {
-          _plantPhotoService.RenamePlantPhoto(plantPhoto, modifiedDate);
-          _usageService.UpdateUsagesForPhotoId(plantPhoto.PhotoId);
 
-          foreach (var imageRoot in _settings.ImageRoots) {
+    public ILogger Logger { get; set; }
+
+    public void RenameImageAndUsages(PlantPhoto plantPhoto)
+    {
+      var dateString = _now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+      var fileManager = new TxFileManager();
+
+      try {
+        using (var conn = new SqlConnection(_settings.ConnectionString))
+        using (var scope = new TransactionScope()) {
+          conn.Open();
+
+          conn.Execute(_photoUpdateQuery,
+            new { OldPhotoId = plantPhoto.PhotoId, NewPhotoId = plantPhoto.PhotoId.AddTif(), NewUpdatedAt = _now });
+
+          conn.Execute(_usageUpdateQuery,
+            new { plantPhoto.PhotoId, NewPhotoId = plantPhoto.PhotoId.AddTif() });
+
+          foreach (var imageRoot in _settings.ImageRoots)
+          {
             var imagePath = plantPhoto.GetActualImagePath(imageRoot);
             var newPath = plantPhoto.GetReplacementPath(imageRoot, _settings.TargetExtension);
 
@@ -57,7 +57,8 @@
             }
           }
 
-          foreach (var thumbnailRoot in _settings.ThumbnailRoots) {
+          foreach (var thumbnailRoot in _settings.ThumbnailRoots)
+          {
             var thumbPath = plantPhoto.GetThumbnailPath(thumbnailRoot);
             var newPath = plantPhoto.GetReplacementPath(thumbnailRoot, _settings.TargetExtension, true);
 
@@ -66,34 +67,71 @@
             }
           }
 
-          //scope.Dispose();
           scope.Complete();
           var message = string.Format("{0}\t{0}{1}\t{2}", plantPhoto.PhotoId, _settings.TargetExtension, dateString);
           Logger.Info(message);
         }
       }
-      catch (TransactionAbortedException trex) {
+      catch (TransactionAbortedException trex)
+      {
         Logger.Error(string.Format("{0}\t{1}", plantPhoto.PhotoId, trex.Message.Replace(Environment.NewLine, " ")));
       }
-      catch (Exception exc) {
+      catch (Exception exc)
+      {
         Logger.Error(string.Format("{0}\t{1}", plantPhoto.PhotoId, exc.Message.Replace(Environment.NewLine, " ")));
       }
     }
 
-    public void RenameImage(string photoId, DateTime modifiedDate)
+    private static string BuildPhotoUpdateQuery()
     {
-      if (string.IsNullOrWhiteSpace(photoId)) throw new ArgumentNullException("photoId");
+      Qb.Clear();
 
-      var maybePlantPhoto = _plantPhotoService.FindById(photoId);
+      Qb.Append("UPDATE tblPlantPhotos ");
+      Qb.Append("SET PhotoID = @NewPhotoId, ");
+      Qb.Append("UpdatedAt = @NewUpdatedAt ");
+      Qb.Append("WHERE PhotoID = @OldPhotoId");
 
-      if (!maybePlantPhoto.Any()) {
-        throw new ArgumentException(@"PlantPhoto not found for the PlantID", photoId);
-      }
-
-      RenameImage(maybePlantPhoto.First(), modifiedDate);
+      return Qb.ToString();
     }
 
-    public ILogger Logger { get; set; }
+    private string BuildUsageUpdateQuery()
+    {
+      Qb.Clear();
 
+      Qb.Append("SELECT PlantLibraryID AS Id, ");
+      Qb.Append("[Name], ");
+      Qb.Append("PhotoFieldID AS PhotoFieldId, ");
+      Qb.Append("InsetFieldID AS InsetFieldId, ");
+      Qb.Append("Inset2FieldID AS Inset2FieldId, ");
+      Qb.Append("Inset3FieldID AS Inset3FieldId, ");
+      Qb.Append("Inset4FieldID AS Inset4FieldId ");
+      Qb.Append("FROM tblPlantLibrary");
+
+      IEnumerable<PlantLibrary> libraries;
+
+      using (var conn = new SqlConnection(_settings.ConnectionString)) {
+        libraries = conn.Query<PlantLibrary>(Qb.ToString()).ToList();
+      }
+
+      var ids = libraries.Select(p => p.PhotoFieldId)
+        .Concat(libraries.Select(p => p.InsetFieldId))
+        .Concat(libraries.Select(p => p.Inset2FieldId))
+        .Concat(libraries.Select(p => p.Inset3FieldId))
+        .Concat(libraries.Select(p => p.Inset4FieldId))
+        .Where(k => k.HasValue)
+        .Cast<int>()
+        .Distinct()
+        .OrderBy(k => k)
+        .ToList();
+
+      Qb.Clear();
+
+      Qb.Append("UPDATE tblPlantFieldUsage ");
+      Qb.Append("SET FieldValue = @NewPhotoId ");
+      Qb.Append("WHERE FieldValue = @PhotoId ");
+      Qb.AppendFormat("AND CustomFieldID IN ({0})", string.Join(", ", ids));
+
+      return Qb.ToString();
+    }
   }
 }
