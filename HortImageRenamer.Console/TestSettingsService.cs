@@ -5,30 +5,23 @@
 
   public class TestSettingsService : ISettingsService
   {
-    public string LegalExtensions
+    public TestSettingsService()
     {
-      get { return ".eps|.esp|.tif|.tiff|.jp|.jpg|.jpeg|.pdf|.bmp|.hmp|.psd"; }
+      LegalExtensions = ".eps|.esp|.tif|.tiff|.jp|.jpg|.jpeg|.pdf|.bmp|.hmp|.psd";
+      TargetExtension = ".tif";
+      ImageRoots = new List<string> { @"\\Storage1\Users\garmstrong\FakeHortImages" };
+      ThumbnailRoots = new List<string> { @"\\Storage1\Users\garmstrong\FakeHortThumbnails" };
+      ConnectionString = @"Data Source=(localdb)\ProjectsV12; Initial Catalog=HortProd; Integrated Security=true";
     }
 
-    public string TargetExtension
-    {
-      get { return ".tif"; }
-    }
+    public string LegalExtensions { get; set; }
 
-    public IEnumerable<string> ImageRoots
-    {
-      get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortImages"}; }
-    }
+    public string TargetExtension { get; set; }
 
-    public IEnumerable<string> ThumbnailRoots
-    {
-      get { return new List<string> {@"\\Storage1\Users\garmstrong\FakeHortThumbnails"}; }
-    }
+    public IEnumerable<string> ImageRoots { get; set; }
 
-    public string ConnectionString
-    {
-      get { return @"Data Source=(localdb)\ProjectsV12; Initial Catalog=HortProd; Integrated Security=true"; }
-      
-    }
+    public IEnumerable<string> ThumbnailRoots { get; set; }
+
+    public string ConnectionString { get; set; }
   }
 }

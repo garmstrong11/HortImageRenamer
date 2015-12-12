@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRenameConfig.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ISettingsService.cs" />
     <Compile Include="Maybe.cs" />
