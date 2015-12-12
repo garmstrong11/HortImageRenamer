@@ -76,17 +76,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HortImageRenamer.ConnectUnc\HortImageRenamer.ConnectUnc.csproj">
-      <Project>{803f6449-b849-4a19-bd4b-d643871e3c3b}</Project>
-      <Name>HortImageRenamer.ConnectUnc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HortImageRenamer.Core\HortImageRenamer.Core.csproj">
       <Project>{1a4bbb19-751f-4be1-b147-032ed1e0e815}</Project>
       <Name>HortImageRenamer.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HortImageRenamer.DapperRepositories\HortImageRenamer.DapperRepositories.csproj">
-      <Project>{e90d3dcc-f6d8-4868-9af2-7202301db269}</Project>
-      <Name>HortImageRenamer.DapperRepositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\HortImageRenamer.Domain\HortImageRenamer.Domain.csproj">
       <Project>{64930d04-77bd-4ae4-98f9-f71b26f58bc2}</Project>
