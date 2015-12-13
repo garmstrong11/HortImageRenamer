@@ -26,8 +26,12 @@
 
     public void RenameAll()
     {
+      var counter = 1;
+      var count = _plantPhotoSvc.PlantPhotos.Count();
+
       foreach (var plantPhoto in _plantPhotoSvc.PlantPhotos) {
         _imageRenameSvc.RenameImageAndUsages(plantPhoto);
+        ConsoleLogger.Info(string.Format("{0} of {1}: Processed {2}", counter++, count, plantPhoto.PhotoId));
       }
     }
 
